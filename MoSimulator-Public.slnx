@@ -1,0 +1,11 @@
+﻿<Solution>
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Reefscape.csproj" />
+  <Project Path="RobotFramework.csproj" />
+  <Project Path="GameSystems.csproj" />
+  <Project Path="MoSimCore.csproj" />
+  <Project Path="Techno.csproj" />
+  <Project Path="MoSimLib.csproj" />
+  <Project Path="Lynk.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+</Solution>
