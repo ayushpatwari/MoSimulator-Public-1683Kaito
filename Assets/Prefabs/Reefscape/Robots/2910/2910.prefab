@@ -44403,6 +44403,7 @@ MonoBehaviour:
     <RotationVariance>k__BackingField: 0.1
     <DropOrientation>k__BackingField: 1
     <RequireIntaking>k__BackingField: 1
+    <TargetTransform>k__BackingField: {fileID: 0}
     <DrawDebugLines>k__BackingField: 0
   superCycler: 0
   armJoint: {fileID: 5168191439847765364}
