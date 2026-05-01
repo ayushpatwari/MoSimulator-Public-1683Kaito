@@ -90,9 +90,9 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
 
         private ReefscapeAutoAlign _autoAlign;
 
-        private readonly float CoralScoringZOffset = 7;
+        private readonly float _coralScoringZOffset = 7;
 
-        private ReefscapeSetpoints previousSetpoint = ReefscapeSetpoints.Stow;
+        private ReefscapeSetpoints _previousSetpoint = ReefscapeSetpoints.Stow;
 
         protected override void Start()
         {
@@ -133,30 +133,6 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
             _autoAlign = gameObject.GetComponent<ReefscapeAutoAlign>();
         }
 
-        private IEnumerator ControlledSetSetpoint(TechnoSetpoint setpoint)
-        {
-            if (setpoint.elevatorHeight > _elevatorTargetHeight)
-            {
-                _elevatorArmTargetAngle = setpoint.elevatorAngle;
-                _intakeArmTargetAngle = setpoint.intakeAngle;
-                yield return new WaitUntil(() =>
-                    IsNear(elevatorArm.GetSingleAxisAngle(JointAxis.X), setpoint.elevatorAngle, 2f)
-                    && IsNear(intakeArm.GetSingleAxisAngle(JointAxis.X), setpoint.intakeAngle, 5f)
-                );
-                _elevatorTargetHeight = setpoint.elevatorHeight;
-            }
-            else
-            {
-                _intakeArmTargetAngle = setpoint.intakeAngle;
-                _elevatorTargetHeight = setpoint.elevatorHeight;
-                yield return new WaitUntil(() =>
-                    IsNear(intakeArm.GetSingleAxisAngle(JointAxis.X), setpoint.intakeAngle, 5f)
-                    && IsNear(elevator.GetElevatorHeight(), setpoint.elevatorHeight, 10f)
-                );
-                _elevatorArmTargetAngle = setpoint.elevatorAngle;
-            }
-        }
-
         private void UpdateSetpoints()
         {
             elevator.SetTarget(_elevatorTargetHeight);
@@ -182,7 +158,7 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
                 {
                     CurrentCoralStationMode.DropOrientation = DropOrientation.Horizontal;
                     coralIntake.ChangeTarget(coralL1StowState.stateTarget);
-                    _autoAlign.offset = new Vector3(0, 0, CoralScoringZOffset - 2);
+                    _autoAlign.offset = new Vector3(0, 0, _coralScoringZOffset - 2);
                 }
 
                 _coralController.SetTargetState(coralL1StowState);
@@ -246,14 +222,14 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
 
             }
             else if (CurrentSetpoint != ReefscapeSetpoints.Climb && CurrentSetpoint != ReefscapeSetpoints.Climbed
-                                                                 && intakeRigidBody.mass == 30)
+                                                                 && intakeRigidBody.mass.Equals(30.0f))
             {
                 intakeRigidBody.mass = 1;
                 stage1Joint.freeLinearAxis(JointAxis.Y);
                 stage2Joint.freeLinearAxis(JointAxis.Y);
             }
 
-            if (previousSetpoint == ReefscapeSetpoints.Place && CurrentSetpoint != ReefscapeSetpoints.Place)
+            if (_previousSetpoint == ReefscapeSetpoints.Place && CurrentSetpoint != ReefscapeSetpoints.Place)
             {
                 _alreadyPlaced = false;
             }
@@ -324,22 +300,35 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
                     break;
             }
 
-            previousSetpoint = CurrentSetpoint;
+            _previousSetpoint = CurrentSetpoint;
 
             UpdateSetpoints();
         }
-
-        private void UpdateAutoAlignOffset()
+        
+        private IEnumerator ControlledSetSetpoint(TechnoSetpoint setpoint)
         {
-            if (coralIntake.GamePiece != null && CurrentIntakeMode == ReefscapeIntakeMode.Normal)
+            if (setpoint.elevatorHeight > _elevatorTargetHeight)
             {
-                var coralPositionMeters = coralTarget.transform
-                    .InverseTransformPoint(coralIntake.GamePiece.transform.position).x;
-
-                _autoAlign.offset = new Vector3(-coralPositionMeters * 39.3701f, 0, CoralScoringZOffset);
+                _elevatorArmTargetAngle = setpoint.elevatorAngle;
+                _intakeArmTargetAngle = setpoint.intakeAngle;
+                yield return new WaitUntil(() =>
+                    IsNear(elevatorArm.GetSingleAxisAngle(JointAxis.X), setpoint.elevatorAngle, 2f)
+                    && IsNear(intakeArm.GetSingleAxisAngle(JointAxis.X), setpoint.intakeAngle, 5f)
+                );
+                _elevatorTargetHeight = setpoint.elevatorHeight;
+            }
+            else
+            {
+                _intakeArmTargetAngle = setpoint.intakeAngle;
+                _elevatorTargetHeight = setpoint.elevatorHeight;
+                yield return new WaitUntil(() =>
+                    IsNear(intakeArm.GetSingleAxisAngle(JointAxis.X), setpoint.intakeAngle, 5f)
+                    && IsNear(elevator.GetElevatorHeight(), setpoint.elevatorHeight, 10f)
+                );
+                _elevatorArmTargetAngle = setpoint.elevatorAngle;
             }
         }
-
+        
         private IEnumerator PlaceCoroutine()
         {
             if (_alreadyPlaced)
@@ -396,6 +385,17 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
                 }
 
                 _alreadyPlaced = true;
+            }
+        }
+
+        private void UpdateAutoAlignOffset()
+        {
+            if (coralIntake.GamePiece != null && CurrentIntakeMode == ReefscapeIntakeMode.Normal)
+            {
+                var coralPositionMeters = coralTarget.transform
+                    .InverseTransformPoint(coralIntake.GamePiece.transform.position).x;
+
+                _autoAlign.offset = new Vector3(-coralPositionMeters * 39.3701f, 0, _coralScoringZOffset);
             }
         }
 
