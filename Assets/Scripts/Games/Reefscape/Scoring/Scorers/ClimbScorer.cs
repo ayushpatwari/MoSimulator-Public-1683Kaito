@@ -142,8 +142,8 @@ namespace Games.Reefscape.Scoring.Scorers
         {
             if (scoreData is ReefscapeScoreData reefscapeData)
             {
-                // if (gameState == GameState.Endgame)
-                // {
+                if (gameState == GameState.Endgame)
+                {
                     _inBargeZone = _bargeZoneBounds.OverlapBox()
                         .Any(overlappingCollider =>
                             overlappingCollider.gameObject.CompareTag(Alliance == Alliance.Blue
@@ -167,7 +167,7 @@ namespace Games.Reefscape.Scoring.Scorers
                         reefscapeData.ParkPoints += 2;
                         finalScoreAdded = 2;
                     }
-                // } 
+                } 
                 if (gameState == GameState.End)
                 {
                     // Carry over the logic from the final endgame state to the final scoreboard

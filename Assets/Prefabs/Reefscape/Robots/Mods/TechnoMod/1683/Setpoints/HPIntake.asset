@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: HPIntake
   m_EditorClassIdentifier: 
   elevatorHeight: 2.89057
-  elevatorAngle: 37
-  intakeAngle: -3
+  elevatorAngle: 36.2
+  intakeAngle: 355.25
