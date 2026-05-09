@@ -309,7 +309,7 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
                 yield return new WaitUntil(() =>
                     IsNear(elevatorArm.GetSingleAxisAngle(JointAxis.X), setpoint.elevatorAngle, 2f)
                     && IsNear(intakeArm.GetSingleAxisAngle(JointAxis.X), setpoint.intakeAngle, 5f)
-                    && (setpoint == l4 ? (_autoAlign.enabled && _autoAlign.getDistance() < 0.2) : true )
+                    && (setpoint != l4 || (_autoAlign.enabled && _autoAlign.getDistance() < 0.2) )
                 );
                 _elevatorTargetHeight = setpoint.elevatorHeight;
             }
