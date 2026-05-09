@@ -27,7 +27,6 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
         [SerializeField] private GenericJoint stage2Joint;
 
         [Header("Intake")] [SerializeField] private GenericAnimationJoint[] intakeWheels;
-        [SerializeField] private GenericAnimationJoint drumJoint;
         [SerializeField] private float wheelIntakeSpeed = 10f;
         private bool _isScoring;
         private bool _alreadyPlaced;
@@ -199,16 +198,12 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
                 {
                     foreach (var wheel in intakeWheels)
                         wheel.VelocityRoller(wheelIntakeSpeed).useAxis(JointAxis.Z);
-
-                    drumJoint.VelocityRoller(wheelIntakeSpeed).useAxis(JointAxis.X);
                 }
                 else
                 {
                     // Explicitly stop wheel animations
                     foreach (var wheel in intakeWheels)
                         wheel.VelocityRoller(0).useAxis(JointAxis.Z);
-
-                    drumJoint.VelocityRoller(0).useAxis(JointAxis.X);
                 }
             }
 
@@ -314,6 +309,7 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
                 yield return new WaitUntil(() =>
                     IsNear(elevatorArm.GetSingleAxisAngle(JointAxis.X), setpoint.elevatorAngle, 2f)
                     && IsNear(intakeArm.GetSingleAxisAngle(JointAxis.X), setpoint.intakeAngle, 5f)
+                    && (setpoint == l4 ? (_autoAlign.enabled && _autoAlign.getDistance() < 0.2) : true )
                 );
                 _elevatorTargetHeight = setpoint.elevatorHeight;
             }
@@ -336,8 +332,7 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
 
             _isScoring = true;
             StartCoroutine(PlacePiece());
-
-            drumJoint.VelocityRoller(-wheelIntakeSpeed).useAxis(JointAxis.X);
+            
             float timer = 0;
             while (timer < 0.5f)
             {
@@ -347,7 +342,6 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
             }
 
             foreach (var wheel in intakeWheels) wheel.VelocityRoller(0);
-            drumJoint.VelocityRoller(0).useAxis(JointAxis.Z);
 
             _isScoring = false;
         }
