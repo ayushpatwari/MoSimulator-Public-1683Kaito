@@ -18,9 +18,8 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
 {
     public class Techno : ReefscapeRobotBase
     {
-        [Header("Robot Components")] [SerializeField]
-        private GenericElevator elevator;
-
+        [Header("Robot Components")] 
+        [SerializeField] private GenericElevator elevator;
         [SerializeField] private GenericJoint elevatorArm;
         [SerializeField] private GenericJoint intakeArm;
         [SerializeField] private GenericJoint stage1Joint;
@@ -35,22 +34,19 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
         [SerializeField] private Transform coralTarget;
         [SerializeField] private Transform coralSlider;
 
-        [Header("Game Piece Intakes")] [SerializeField]
-        private ReefscapeGamePieceIntake coralIntake;
-
+        [Header("Game Piece Intakes")] 
+        [SerializeField] private ReefscapeGamePieceIntake coralIntake;
         [SerializeField] private ReefscapeGamePieceIntake algaeIntake;
 
         [Header("Climb")] [SerializeField] private ClimbScorer climbScorer;
         [SerializeField] private Rigidbody intakeRigidBody;
 
-        [Header("PID Constants")] [SerializeField]
-        private PidConstants elevatorArmPid;
-
+        [Header("PID Constants")] 
+        [SerializeField] private PidConstants elevatorArmPid;
         [SerializeField] private PidConstants intakeArmPid;
 
-        [Header("Robot Setpoints")] [SerializeField]
-        private TechnoSetpoint stow;
-
+        [Header("Robot Setpoints")] 
+        [SerializeField] private TechnoSetpoint stow;
         [SerializeField] private TechnoSetpoint hpIntake;
         [SerializeField] private TechnoSetpoint groundAlgaeIntake;
         [SerializeField] private TechnoSetpoint l1;
@@ -65,14 +61,14 @@ namespace Prefabs.Reefscape.Robots.Mods._1683Mod._1683
         [SerializeField] private TechnoSetpoint climb;
         [SerializeField] private TechnoSetpoint climbDown;
 
-        [Header("Audio")] [SerializeField] private AudioSource intakeAudioSource;
+        [Header("Audio")] 
+        [SerializeField] private AudioSource intakeAudioSource;
         [SerializeField] private AudioClip intakeClip;
         [SerializeField] private AudioSource algaeAudioSource;
         [SerializeField] private AudioClip algaeClip;
 
-        [Header("Game Piece States")] [SerializeField]
-        private GamePieceState coralStowState;
-
+        [Header("Game Piece States")] 
+        [SerializeField] private GamePieceState coralStowState;
         [SerializeField] private GamePieceState coralL1StowState;
         [SerializeField] private GamePieceState algaeStowState;
 
